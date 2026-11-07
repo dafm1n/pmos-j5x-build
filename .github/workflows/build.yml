@@ -1,0 +1,33 @@
+name: Build pmOS samsung-j5x
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Install pmbootstrap
+        run: |
+          python3 -m pip install --user "git+https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git"
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Configure device
+        run: |
+          pmbootstrap config device samsung-j5x
+          pmbootstrap config ui none
+          pmbootstrap config user vova
+      - name: Build image
+        run: |
+          printf '147147\n147147\n' | pmbootstrap install --no-fde --no-splash || printf '147147\n147147\n' | pmbootstrap install --no-fde
+      - name: Export artifacts
+        run: |
+          pmbootstrap export
+          ls -la /root/.local/var/pmbootstrap/export/ 2>/dev/null || ls -la ~/.local/var/pmbootstrap/export/
+      - name: Upload images
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmos-samsung-j5x
+          path: |
+            ~/.local/var/pmbootstrap/export/*.img
+            ~/.local/var/pmbootstrap/export/boot/*.img
+          if-no-files-found: error
+          retention-days: 7
