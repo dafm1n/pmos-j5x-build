@@ -12,8 +12,8 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Write config
         run: |
-          mkdir -p ~/.pmbootstrap
-          cat > ~/.pmbootstrap/pmbootstrap.cfg <<CFG
+          mkdir -p ~/.config
+          cat > ~/.config/pmbootstrap_v3.cfg <<CFG
           [pmbootstrap]
           device = samsung-j5x
           ui = none
