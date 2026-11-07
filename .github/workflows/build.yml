@@ -23,6 +23,9 @@ jobs:
           extra_packages =
           hostname = j5x
           CFG
+      - name: Clone pmaports
+        run: |
+          git clone --depth 1 https://gitlab.postmarketos.org/postmarketOS/pmaports.git ~/.local/var/pmbootstrap/cache_git/pmaports
       - name: Build image
         run: |
           printf '147147\n147147\n' | pmbootstrap install --no-fde
